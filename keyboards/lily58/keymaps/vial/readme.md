@@ -14,12 +14,12 @@ An empty key falls through to the layer below it.
 | &#96; | 1 | 2 | 3 | 4 | 5 | | | 6 | 7 | 8 | 9 | 0 | - |
 | Esc | Q | W | E | R | T | | | Y | U | I | O | P | Bksp |
 | Tab<br><sub>Shift</sub> | A<br><sub>Ctrl</sub> | S<br><sub>GUI</sub> | D<br><sub>Alt</sub> | F<br><sub>LOWER</sub> | G<br><sub>RAISE</sub> | | | H<br><sub>RAISE</sub> | J<br><sub>LOWER</sub> | K<br><sub>Alt</sub> | L<br><sub>GUI</sub> | ;<br><sub>Ctrl</sub> | Enter<br><sub>Shift</sub> |
-| Del | Z | X | C | V | B | Ctrl+Shift | Ctrl+Shift | N | M | , | . | ' | /<br><sub>Meh</sub> |
+| Del | Z | X | C | V | B | [<br><sub>Ctrl+Shift</sub> | ]<br><sub>Ctrl+Shift</sub> | N | M | , | . | ' | /<br><sub>Meh</sub> |
 | | | | Left click | RAlt | LOWER | Space<br><sub>Meh</sub> | Ctrl+Bksp | RAISE | RAlt | Right click | | | |
 
 - **Home-row mods:** Ctrl / GUI / Alt on A S D and K L ;. Layer-taps on F G H J (LOWER / RAISE).
-- **Ctrl+Shift** is on the two inner keys, so the left pinky doesn't have to hold both Ctrl (A) and Shift (Tab).
-  Use the key on the opposite hand: right inner key + T for Ctrl+Shift+T.
+- **Inner keys:** tap for `[` / `]`, hold for Ctrl+Shift, so the left pinky doesn't have to hold both Ctrl (A) and Shift (Tab).
+  They work with keys on either hand. Holding one alone, e.g. for Ctrl+Shift+click, takes the 280 ms tapping term.
 - **Meh** is Ctrl+Shift+Alt.
 
 ## LOWER (hold the LOWER thumb, F or J)
@@ -88,7 +88,9 @@ util/flash_lily58.sh           # flash the existing build
 
 Keep the TRRS cable connected. Only plug or unplug TRRS when no USB cable is connected.
 
-- **Left half** (the USB side): LOWER + RAISE + *Boot* puts it in bootloader mode without unplugging anything.
-- **Right half:** move the USB cable to the right half and double-tap reset (or hold BOOT while plugging in).
+- *Boot* is on ADJUST at Esc (left) and Backspace (right). Either one reboots **the half that has the USB cable** into the bootloader.
+- **Left half** (the normal USB side): LOWER + RAISE + *Boot*. No unplugging needed.
+- **Right half:** move the USB cable to the right half, then LOWER + RAISE + *Boot* (or double-tap its reset button).
+  Never connect USB to both halves at once while TRRS is connected.
   The keymap only runs on the left half, so **keymap-only changes just need the left half flashed**; answer `n` for the right one.
   Reflash both halves when `config.h`, `rules.mk` or the userspace changes.

@@ -49,8 +49,9 @@ enum layer_number {
 #define MEH_SPC MEH_T(KC_SPC)
 #define MEH_SLS MEH_T(KC_SLSH)
 
-// Held Ctrl+Shift on the inner keys: fixes Ctrl (A) + Shift (Tab) both being on the left pinky
-#define CS_HOLD LCTL(KC_LSFT)
+// Inner keys: tap [ / ], hold Ctrl+Shift. Fixes Ctrl (A) + Shift (Tab) both being on the left pinky
+#define CS_LBRC C_S_T(KC_LBRC)
+#define CS_RBRC C_S_T(KC_RBRC)
 
 // LOWER mod-taps whose tap is a shifted symbol; the tap is sent in process_record_keymap
 #define LM_PLUS LCTL_T(KC_EQL)
@@ -63,7 +64,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                       KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS,
   KC_ESC,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                       KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
   PS_TAB,  HM_A,    HM_S,    HM_D,    HM_F,    HM_G,                       HM_H,    HM_J,    HM_K,    HM_L,    HM_SCLN, PS_ENT,
-  KC_DEL,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    CS_HOLD, CS_HOLD,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_QUOT, MEH_SLS,
+  KC_DEL,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    CS_LBRC, CS_RBRC,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_QUOT, MEH_SLS,
                     MS_BTN1, KC_RALT, MO(_LOWER), MEH_SPC,      C(KC_BSPC), MO(_RAISE), KC_RALT, MS_BTN2
 ),
 
@@ -110,11 +111,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 // Thumbs are '*' so they can trigger holds on either hand (ZMK lists the space thumb on both sides).
+// The inner Ctrl+Shift keys are '*' too, so they work with keys on their own side.
 const char chordal_hold_layout[MATRIX_ROWS][MATRIX_COLS] PROGMEM = LAYOUT(
   'L', 'L', 'L', 'L', 'L', 'L',                'R', 'R', 'R', 'R', 'R', 'R',
   'L', 'L', 'L', 'L', 'L', 'L',                'R', 'R', 'R', 'R', 'R', 'R',
   'L', 'L', 'L', 'L', 'L', 'L',                'R', 'R', 'R', 'R', 'R', 'R',
-  'L', 'L', 'L', 'L', 'L', 'L', 'L',      'R', 'R', 'R', 'R', 'R', 'R', 'R',
+  'L', 'L', 'L', 'L', 'L', 'L', '*',      '*', 'R', 'R', 'R', 'R', 'R', 'R',
                  '*', '*', '*', '*',      '*', '*', '*', '*'
 );
 

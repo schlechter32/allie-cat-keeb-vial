@@ -76,7 +76,8 @@ flash_side() {
 
 echo "Flashing $CONFIG. Keep TRRS connected; only ever plug or unplug it with USB disconnected."
 echo "Keymap-only changes just need the left half (answer n for the right)."
-echo "Left half: LOWER+RAISE then the Boot key (Esc position). Right half: move USB to it, double-tap reset."
+echo "Bootloader: LOWER+RAISE then Esc or Backspace reboots the half that has USB (or double-tap reset)."
+echo "Right half: move the USB cable to it first. Never connect USB to both halves at once."
 echo
 
 for side in left right; do
