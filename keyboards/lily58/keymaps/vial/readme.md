@@ -15,7 +15,7 @@ On BASE the small text is the hold action instead. Empty keys fall through to th
 <!-- layers:start -->
 ### BASE
 
-Default layer. Small text is what the key does when held.
+Default layer, LEDs show your normal underglow. Small text is what the key does when held.
 
 <table>
 <tr><td align="center"><b>`</b></td><td align="center"><b>1</b></td><td align="center"><b>2</b></td><td align="center"><b>3</b></td><td align="center"><b>4</b></td><td align="center"><b>5</b></td><td></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td></td><td align="center"><b>6</b></td><td align="center"><b>7</b></td><td align="center"><b>8</b></td><td align="center"><b>9</b></td><td align="center"><b>0</b></td><td align="center"><b>-</b></td></tr>
@@ -27,7 +27,7 @@ Default layer. Small text is what the key does when held.
 
 ### LOWER
 
-Hold the ↓ thumb (or hold F / J).
+LEDs blue. Hold the ↓ thumb (or hold F / J).
 
 <table>
 <tr><td align="center"><sub><kbd>∞</kbd></sub></td><td align="center"><sub><kbd>1</kbd></sub></td><td align="center"><sub><kbd>2</kbd></sub></td><td align="center"><sub><kbd>3</kbd></sub></td><td align="center"><sub><kbd>4</kbd></sub></td><td align="center"><sub><kbd>5</kbd></sub></td><td></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td></td><td align="center"><sub><kbd>6</kbd></sub></td><td align="center"><sub><kbd>7</kbd></sub></td><td align="center"><sub><kbd>8</kbd></sub></td><td align="center"><sub><kbd>9</kbd></sub></td><td align="center"><sub><kbd>0</kbd></sub></td><td align="center"><sub><kbd>♡</kbd></sub></td></tr>
@@ -39,7 +39,7 @@ Hold the ↓ thumb (or hold F / J).
 
 ### RAISE
 
-Hold the ↑ thumb (or hold G / H).
+LEDs green. Hold the ↑ thumb (or hold G / H).
 
 <table>
 <tr><td align="center"><sub><kbd>∞</kbd></sub></td><td align="center"><sub><kbd>1</kbd></sub></td><td align="center"><sub><kbd>2</kbd></sub></td><td align="center"><sub><kbd>3</kbd></sub></td><td align="center"><sub><kbd>4</kbd></sub></td><td align="center"><sub><kbd>5</kbd></sub></td><td></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td></td><td align="center"><sub><kbd>6</kbd></sub></td><td align="center"><sub><kbd>7</kbd></sub></td><td align="center"><sub><kbd>8</kbd></sub></td><td align="center"><sub><kbd>9</kbd></sub></td><td align="center"><sub><kbd>0</kbd></sub></td><td align="center"><sub><kbd>♡</kbd></sub></td></tr>
@@ -51,7 +51,7 @@ Hold the ↑ thumb (or hold G / H).
 
 ### ADJUST
 
-Hold the ↓ and ↑ thumbs together.
+LEDs purple. Hold the ↓ and ↑ thumbs together.
 
 <table>
 <tr><td align="center"><b>Clear EEPROM</b><br><sub><kbd>∞</kbd></sub></td><td align="center">·<br><sub><kbd>1</kbd></sub></td><td align="center">·<br><sub><kbd>2</kbd></sub></td><td align="center">·<br><sub><kbd>3</kbd></sub></td><td align="center">·<br><sub><kbd>4</kbd></sub></td><td align="center">·<br><sub><kbd>5</kbd></sub></td><td></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td></td><td align="center">·<br><sub><kbd>6</kbd></sub></td><td align="center">·<br><sub><kbd>7</kbd></sub></td><td align="center">·<br><sub><kbd>8</kbd></sub></td><td align="center">·<br><sub><kbd>9</kbd></sub></td><td align="center">·<br><sub><kbd>0</kbd></sub></td><td align="center">·<br><sub><kbd>♡</kbd></sub></td></tr>
@@ -63,7 +63,7 @@ Hold the ↓ and ↑ thumbs together.
 
 ### PLAIN
 
-Typing layer without home-row mods. Turn on with RAISE + ⌥ (left), off with ⌥ (left).
+LEDs gold. Typing layer without home-row mods. Turn on with RAISE + ⌥ (left), off with ⌥ (left).
 
 <table>
 <tr><td align="center"><sub><kbd>∞</kbd></sub></td><td align="center"><sub><kbd>1</kbd></sub></td><td align="center"><sub><kbd>2</kbd></sub></td><td align="center"><sub><kbd>3</kbd></sub></td><td align="center"><sub><kbd>4</kbd></sub></td><td align="center"><sub><kbd>5</kbd></sub></td><td></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td></td><td align="center"><sub><kbd>6</kbd></sub></td><td align="center"><sub><kbd>7</kbd></sub></td><td align="center"><sub><kbd>8</kbd></sub></td><td align="center"><sub><kbd>9</kbd></sub></td><td align="center"><sub><kbd>0</kbd></sub></td><td align="center"><sub><kbd>♡</kbd></sub></td></tr>
@@ -80,6 +80,7 @@ Typing layer without home-row mods. Turn on with RAISE + ⌥ (left), off with �
 - **Inner keys** <kbd>[</kbd> <kbd>]</kbd>: tap for `[` / `]`, hold for Ctrl+Shift, so the left pinky doesn't have to hold both Ctrl (A) and Shift (⇥).
   They work with keys on either hand. Holding one alone, e.g. for Ctrl+Shift+click, takes the 280 ms tapping term.
 - **Meh** is Ctrl+Shift+Alt.
+- **LED colours:** BASE = your normal underglow, LOWER blue, RAISE green, ADJUST purple, PLAIN gold. They show even when the underglow is switched off.
 
 ## Pointer settings, step by step
 
@@ -92,7 +93,11 @@ All of these are on ADJUST: keep the <kbd>↓</kbd> and <kbd>↑</kbd> thumbs he
 | Trackpoint scroll speed | <kbd>D</kbd> (Scroll speed) | <kbd>J</kbd> / <kbd>K</kbd> (bigger buffer = slower scrolling) |
 | Touchpad, any of the above | <kbd>⌦</kbd> (Shift) **and** <kbd>A</kbd> / <kbd>S</kbd> / <kbd>D</kbd> | <kbd>J</kbd> / <kbd>K</kbd> |
 
-Then tap <kbd>F</kbd> (Save pointer), still on ADJUST, or the change is lost at the next reboot.
+Each tap changes the value by a small step (speed ±0.1; the trackpoint starts at 2.0, so about 5 % per tap). Tap 5–10 times to feel a difference.
+The LEDs confirm every step on the half whose device changed: **white flash = up, red flash = down** (left half = trackpoint, right half = touchpad).
+No flash means the key combination didn't register as an adjustment.
+
+Then tap <kbd>F</kbd> (Save pointer), still on ADJUST, or the change is lost at the next reboot. Saving flashes all LEDs cyan.
 <kbd>B</kbd> toggles drag-scroll and <kbd>G</kbd> toggles sniping (add <kbd>⌦</kbd> for the touchpad); <kbd>T</kbd> cycles scroll lock.
 On LOWER you can also hold <kbd>X</kbd> to scroll with the trackpoint and hold <kbd>V</kbd> for slow sniping.
 

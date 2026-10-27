@@ -19,6 +19,7 @@
 
 #include QMK_KEYBOARD_H
 #include "holykeebs.h"
+#include "pointing.h"
 
 enum layer_number {
   _BASE = 0,
@@ -120,8 +121,47 @@ const char chordal_hold_layout[MATRIX_ROWS][MATRIX_COLS] PROGMEM = LAYOUT(
                  '*', '*', '*', '*',      '*', '*', '*', '*'
 );
 
+// Underglow: LEDs 0-5 are the left half, 6-11 the right half.
+const rgblight_segment_t PROGMEM led_lower[]      = RGBLIGHT_LAYER_SEGMENTS({0, 12, HSV_BLUE});
+const rgblight_segment_t PROGMEM led_raise[]      = RGBLIGHT_LAYER_SEGMENTS({0, 12, HSV_GREEN});
+const rgblight_segment_t PROGMEM led_adjust[]     = RGBLIGHT_LAYER_SEGMENTS({0, 12, HSV_PURPLE});
+const rgblight_segment_t PROGMEM led_plain[]      = RGBLIGHT_LAYER_SEGMENTS({0, 12, HSV_GOLD});
+// Pointer feedback: flashes the half whose device changed (left = trackpoint, right = touchpad).
+const rgblight_segment_t PROGMEM led_up_left[]    = RGBLIGHT_LAYER_SEGMENTS({0, 6, HSV_WHITE});
+const rgblight_segment_t PROGMEM led_up_right[]   = RGBLIGHT_LAYER_SEGMENTS({6, 6, HSV_WHITE});
+const rgblight_segment_t PROGMEM led_down_left[]  = RGBLIGHT_LAYER_SEGMENTS({0, 6, HSV_RED});
+const rgblight_segment_t PROGMEM led_down_right[] = RGBLIGHT_LAYER_SEGMENTS({6, 6, HSV_RED});
+const rgblight_segment_t PROGMEM led_saved[]      = RGBLIGHT_LAYER_SEGMENTS({0, 12, HSV_CYAN});
+
+// Later entries draw on top of earlier ones.
+enum led_layer {
+  LED_LOWER,
+  LED_RAISE,
+  LED_ADJUST,
+  LED_PLAIN,
+  LED_UP_LEFT,
+  LED_UP_RIGHT,
+  LED_DOWN_LEFT,
+  LED_DOWN_RIGHT,
+  LED_SAVED,
+};
+
+const rgblight_segment_t *const PROGMEM rgb_layers[] = RGBLIGHT_LAYERS_LIST(
+  led_lower, led_raise, led_adjust, led_plain,
+  led_up_left, led_up_right, led_down_left, led_down_right, led_saved
+);
+
+void keyboard_post_init_keymap(void) {
+  rgblight_layers = rgb_layers;
+}
+
 layer_state_t layer_state_set_user(layer_state_t state) {
-  return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
+  state = update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
+  rgblight_set_layer_state(LED_LOWER, layer_state_cmp(state, _LOWER));
+  rgblight_set_layer_state(LED_RAISE, layer_state_cmp(state, _RAISE));
+  rgblight_set_layer_state(LED_ADJUST, layer_state_cmp(state, _ADJUST));
+  rgblight_set_layer_state(LED_PLAIN, layer_state_cmp(state, _PLAIN));
+  return state;
 }
 
 // ZMK require-prior-idle-ms: a home-row key pressed within HRM_PRIOR_IDLE_MS of the previous
@@ -198,6 +238,19 @@ bool process_record_keymap(uint16_t keycode, keyrecord_t *record) {
   // A home-row key that resolved as a tap continues the typing streak.
   if (record->event.pressed && record->tap.count && hrm_tap_keycode(keycode) != KC_NO) {
     mark_typed();
+  }
+
+  // Flash feedback for the holykeebs pointer settings (holykeebs handles the keys themselves).
+  if (record->event.pressed) {
+    bool setting = g_hk_state.setting_default_scale || g_hk_state.setting_sniping_scale || g_hk_state.setting_scroll_buffer;
+    bool right   = get_mods() & MOD_MASK_SHIFT; // Shift targets the peripheral (right) side
+    if (setting && keycode == KC_UP) {
+      rgblight_blink_layer(right ? LED_UP_RIGHT : LED_UP_LEFT, 150);
+    } else if (setting && keycode == KC_DOWN) {
+      rgblight_blink_layer(right ? LED_DOWN_RIGHT : LED_DOWN_LEFT, 150);
+    } else if (keycode == HK_SAVE || keycode == HK_RESET) {
+      rgblight_blink_layer(LED_SAVED, 600);
+    }
   }
 
   switch (keycode) {

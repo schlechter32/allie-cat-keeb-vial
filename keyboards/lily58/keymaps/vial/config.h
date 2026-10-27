@@ -49,3 +49,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define RGBLIGHT_EFFECT_KNIGHT
 #define RGBLIGHT_EFFECT_STATIC_GRADIENT
 #define RGBLIGHT_EFFECT_TWINKLE
+
+// Layer colours and feedback flashes (see rgb_layers in keymap.c)
+#define RGBLIGHT_LAYERS
+#define RGBLIGHT_LAYER_BLINK
+#define RGBLIGHT_LAYERS_RETAIN_VAL       // layer colours follow the brightness setting
+#define RGBLIGHT_LAYERS_OVERRIDE_RGB_OFF // and still show when the underglow is switched off
+#define RGBLIGHT_MAX_LAYERS 12

@@ -28,11 +28,11 @@ LEGEND = [
 
 # How to reach each layer, using the printed legends.
 LAYER_INFO = {
-    '_BASE': 'Default layer. Small text is what the key does when held.',
-    '_LOWER': 'Hold the ↓ thumb (or hold F / J).',
-    '_RAISE': 'Hold the ↑ thumb (or hold G / H).',
-    '_ADJUST': 'Hold the ↓ and ↑ thumbs together.',
-    '_PLAIN': 'Typing layer without home-row mods. Turn on with RAISE + ⌥ (left), off with ⌥ (left).',
+    '_BASE': 'Default layer, LEDs show your normal underglow. Small text is what the key does when held.',
+    '_LOWER': 'LEDs blue. Hold the ↓ thumb (or hold F / J).',
+    '_RAISE': 'LEDs green. Hold the ↑ thumb (or hold G / H).',
+    '_ADJUST': 'LEDs purple. Hold the ↓ and ↑ thumbs together.',
+    '_PLAIN': 'LEDs gold. Typing layer without home-row mods. Turn on with RAISE + ⌥ (left), off with ⌥ (left).',
     '_SPARE': 'Empty, free for Vial.',
 }
 
