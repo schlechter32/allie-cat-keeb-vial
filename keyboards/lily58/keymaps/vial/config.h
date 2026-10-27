@@ -41,6 +41,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Underglow: 6 LEDs per half, synced over TRRS
 #define RGBLED_SPLIT { 6, 6 }
 #define RGBLIGHT_SLEEP
+// The half without USB never sees the host wake up, so the startup suspend check would keep it
+// "suspended" and RGBLIGHT_SLEEP would switch its LEDs off. keymap.c handles host suspend instead.
+#define NO_USB_STARTUP_CHECK
 #define RGBLIGHT_LIMIT_VAL 150   // cap brightness to keep current draw sane
 #define RGBLIGHT_EFFECT_BREATHING
 #define RGBLIGHT_EFFECT_RAINBOW_MOOD

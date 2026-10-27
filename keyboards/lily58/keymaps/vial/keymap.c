@@ -20,6 +20,7 @@
 #include QMK_KEYBOARD_H
 #include "holykeebs.h"
 #include "pointing.h"
+#include "usb_device_state.h"
 
 enum layer_number {
   _BASE = 0,
@@ -153,6 +154,15 @@ const rgblight_segment_t *const PROGMEM rgb_layers[] = RGBLIGHT_LAYERS_LIST(
 
 void keyboard_post_init_keymap(void) {
   rgblight_layers = rgb_layers;
+}
+
+// With NO_USB_STARTUP_CHECK, QMK no longer runs its suspend loop, so turn the underglow off here when
+// the host sleeps. Only the USB side reacts; the change syncs to the other half. QMK's USB wakeup
+// handler turns it back on.
+void notify_usb_device_state_change_user(struct usb_device_state usb_device_state) {
+  if (is_keyboard_master() && usb_device_state.configure_state == USB_DEVICE_STATE_SUSPEND) {
+    rgblight_suspend();
+  }
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
