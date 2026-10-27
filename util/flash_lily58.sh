@@ -3,7 +3,7 @@
 #
 # Usage: util/flash_lily58.sh [--build] [config]
 #   config defaults to trackpoint_tps43 (files build_lily58/lily58_rev1_vial_<config>_<side>.uf2)
-#   --build rebuilds both halves first.
+#   --build rebuilds both halves (and the keymap docs) first.
 
 set -euo pipefail
 
@@ -27,6 +27,7 @@ if [[ "$BUILD" == yes ]]; then
         python3 build.py --build-single --keyboard lily58/rev1 --keymap vial --user-name holykeebs \
             --left-device "$LEFT_DEVICE" --right-device "$RIGHT_DEVICE" --side "$side"
     done
+    python3 util/lily58_keymap_doc.py
 fi
 
 for side in left right; do

@@ -4,68 +4,97 @@ A port of my ZMK Corne layout ([`zmk-config/config/corne.keymap`](https://github
 The keys the Corne doesn't have (the number row, the two inner keys and the outer thumbs) are used for extras.
 The source is [`keymap.c`](keymap.c).
 
-**How to read the tables:** the top line in a key is the tap, the small line below it is the hold.
-An empty key falls through to the layer below it.
+**Interactive version:** [`keymap.html`](keymap.html). Open it locally in a browser (`xdg-open keyboards/lily58/keymaps/vial/keymap.html`) for the real board shape, layer tabs and hover details.
 
-## BASE
+## Layers
 
-| | | | | | | | | | | | | | |
-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-| &#96; | 1 | 2 | 3 | 4 | 5 | | | 6 | 7 | 8 | 9 | 0 | - |
-| Esc | Q | W | E | R | T | | | Y | U | I | O | P | Bksp |
-| Tab<br><sub>Shift</sub> | A<br><sub>Ctrl</sub> | S<br><sub>GUI</sub> | D<br><sub>Alt</sub> | F<br><sub>LOWER</sub> | G<br><sub>RAISE</sub> | | | H<br><sub>RAISE</sub> | J<br><sub>LOWER</sub> | K<br><sub>Alt</sub> | L<br><sub>GUI</sub> | ;<br><sub>Ctrl</sub> | Enter<br><sub>Shift</sub> |
-| Del | Z | X | C | V | B | [<br><sub>Ctrl+Shift</sub> | ]<br><sub>Ctrl+Shift</sub> | N | M | , | . | ' | /<br><sub>Meh</sub> |
-| | | | Left click | RAlt | LOWER | Space<br><sub>Meh</sub> | Ctrl+Bksp | RAISE | RAlt | Right click | | | |
+Big text is what the key does. Small <kbd>text</kbd> is the printed legend on the keycap (▭ = the blank wide thumb key).
+On BASE the small text is the hold action instead. Empty keys fall through to the layer below.
+
+<!-- Generated from keymap.c by util/lily58_keymap_doc.py; edit keymap.c and rerun it (flash_lily58.sh --build does). -->
+<!-- layers:start -->
+### BASE
+
+Default layer. Small text is what the key does when held.
+
+<table>
+<tr><td align="center"><b>`</b></td><td align="center"><b>1</b></td><td align="center"><b>2</b></td><td align="center"><b>3</b></td><td align="center"><b>4</b></td><td align="center"><b>5</b></td><td></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td></td><td align="center"><b>6</b></td><td align="center"><b>7</b></td><td align="center"><b>8</b></td><td align="center"><b>9</b></td><td align="center"><b>0</b></td><td align="center"><b>-</b></td></tr>
+<tr><td align="center"><b>Esc</b></td><td align="center"><b>Q</b></td><td align="center"><b>W</b></td><td align="center"><b>E</b></td><td align="center"><b>R</b></td><td align="center"><b>T</b></td><td></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td></td><td align="center"><b>Y</b></td><td align="center"><b>U</b></td><td align="center"><b>I</b></td><td align="center"><b>O</b></td><td align="center"><b>P</b></td><td align="center"><b>Bksp</b></td></tr>
+<tr><td align="center"><b>Tab</b><br><sub>Shift</sub></td><td align="center"><b>A</b><br><sub>Ctrl</sub></td><td align="center"><b>S</b><br><sub>GUI</sub></td><td align="center"><b>D</b><br><sub>Alt</sub></td><td align="center"><b>F</b><br><sub>LOWER</sub></td><td align="center"><b>G</b><br><sub>RAISE</sub></td><td></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td></td><td align="center"><b>H</b><br><sub>RAISE</sub></td><td align="center"><b>J</b><br><sub>LOWER</sub></td><td align="center"><b>K</b><br><sub>Alt</sub></td><td align="center"><b>L</b><br><sub>GUI</sub></td><td align="center"><b>;</b><br><sub>Ctrl</sub></td><td align="center"><b>Enter</b><br><sub>Shift</sub></td></tr>
+<tr><td align="center"><b>Del</b></td><td align="center"><b>Z</b></td><td align="center"><b>X</b></td><td align="center"><b>C</b></td><td align="center"><b>V</b></td><td align="center"><b>B</b></td><td align="center"><b>[</b><br><sub>Ctrl+Shift</sub></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td align="center"><b>]</b><br><sub>Ctrl+Shift</sub></td><td align="center"><b>N</b></td><td align="center"><b>M</b></td><td align="center"><b>,</b></td><td align="center"><b>.</b></td><td align="center"><b>&#x27;</b></td><td align="center"><b>/</b><br><sub>Meh</sub></td></tr>
+<tr><td></td><td></td><td></td><td align="center"><b>Left click</b></td><td align="center"><b>AltGr</b></td><td align="center"><b>LOWER</b></td><td align="center"><b>Space</b><br><sub>Meh</sub></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td align="center"><b>Ctrl+Bksp</b></td><td align="center"><b>RAISE</b></td><td align="center"><b>AltGr</b></td><td align="center"><b>Right click</b></td><td></td><td></td><td></td></tr>
+</table>
+
+### LOWER
+
+Hold the ↓ thumb (or hold F / J).
+
+<table>
+<tr><td align="center"><sub><kbd>∞</kbd></sub></td><td align="center"><sub><kbd>1</kbd></sub></td><td align="center"><sub><kbd>2</kbd></sub></td><td align="center"><sub><kbd>3</kbd></sub></td><td align="center"><sub><kbd>4</kbd></sub></td><td align="center"><sub><kbd>5</kbd></sub></td><td></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td></td><td align="center"><sub><kbd>6</kbd></sub></td><td align="center"><sub><kbd>7</kbd></sub></td><td align="center"><sub><kbd>8</kbd></sub></td><td align="center"><sub><kbd>9</kbd></sub></td><td align="center"><sub><kbd>0</kbd></sub></td><td align="center"><sub><kbd>♡</kbd></sub></td></tr>
+<tr><td align="center"><b>F1</b><br><sub><kbd>◇</kbd></sub></td><td align="center"><b>F2</b><br><sub><kbd>Q</kbd></sub></td><td align="center"><b>F3</b><br><sub><kbd>W</kbd></sub></td><td align="center"><b>F4</b><br><sub><kbd>E</kbd></sub></td><td align="center"><b>F5</b><br><sub><kbd>R</kbd></sub></td><td align="center"><b>F6</b><br><sub><kbd>T</kbd></sub></td><td></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td></td><td align="center"><b>F7</b><br><sub><kbd>Y</kbd></sub></td><td align="center"><b>F8</b><br><sub><kbd>U</kbd></sub></td><td align="center"><b>F9</b><br><sub><kbd>I</kbd></sub></td><td align="center"><b>F10</b><br><sub><kbd>O</kbd></sub></td><td align="center"><b>F11</b><br><sub><kbd>P</kbd></sub></td><td align="center"><b>F12</b><br><sub><kbd>⌫</kbd></sub></td></tr>
+<tr><td align="center"><sub><kbd>⇥</kbd></sub></td><td align="center"><b>_</b><br><sub><kbd>A</kbd></sub></td><td align="center"><b>+</b><br>Ctrl<br><sub><kbd>S</kbd></sub></td><td align="center"><b>^</b><br>Alt<br><sub><kbd>D</kbd></sub></td><td align="center"><b>$</b><br>GUI<br><sub><kbd>F</kbd></sub></td><td align="center"><sub><kbd>G</kbd></sub></td><td></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td></td><td align="center"><b>←</b><br><sub><kbd>H</kbd></sub></td><td align="center"><b>↓</b><br><sub><kbd>J</kbd></sub></td><td align="center"><b>↑</b><br><sub><kbd>K</kbd></sub></td><td align="center"><b>→</b><br><sub><kbd>L</kbd></sub></td><td align="center"><b>End</b><br><sub><kbd>;</kbd></sub></td><td align="center"><sub><kbd>⏎</kbd></sub></td></tr>
+<tr><td align="center"><sub><kbd>⌦</kbd></sub></td><td align="center"><b>~</b><br><sub><kbd>Z</kbd></sub></td><td align="center"><b>Drag scroll</b><br><sub><kbd>X</kbd></sub></td><td align="center"><b>Middle click</b><br><sub><kbd>C</kbd></sub></td><td align="center"><b>Snipe</b><br><sub><kbd>V</kbd></sub></td><td align="center"><b>F11</b><br><sub><kbd>B</kbd></sub></td><td align="center"><sub><kbd>[</kbd></sub></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td align="center"><sub><kbd>]</kbd></sub></td><td align="center"><b>Home</b><br><sub><kbd>N</kbd></sub></td><td align="center"><b>PgDn</b><br><sub><kbd>M</kbd></sub></td><td align="center"><b>PgUp</b><br><sub><kbd>,</kbd></sub></td><td align="center"><b>End</b><br><sub><kbd>.</kbd></sub></td><td align="center"><b>PgUp</b><br><sub><kbd>&#x27;</kbd></sub></td><td align="center"><sub><kbd>/</kbd></sub></td></tr>
+<tr><td></td><td></td><td></td><td align="center"><sub><kbd>⌃</kbd></sub></td><td align="center"><sub><kbd>⌥</kbd></sub></td><td align="center"><sub><kbd>↓</kbd></sub></td><td align="center"><sub><kbd>▭</kbd></sub></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td align="center"><sub><kbd>▭</kbd></sub></td><td align="center"><sub><kbd>↑</kbd></sub></td><td align="center"><sub><kbd>‡</kbd></sub></td><td align="center"><sub><kbd>▲</kbd></sub></td><td></td><td></td><td></td></tr>
+</table>
+
+### RAISE
+
+Hold the ↑ thumb (or hold G / H).
+
+<table>
+<tr><td align="center"><sub><kbd>∞</kbd></sub></td><td align="center"><sub><kbd>1</kbd></sub></td><td align="center"><sub><kbd>2</kbd></sub></td><td align="center"><sub><kbd>3</kbd></sub></td><td align="center"><sub><kbd>4</kbd></sub></td><td align="center"><sub><kbd>5</kbd></sub></td><td></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td></td><td align="center"><sub><kbd>6</kbd></sub></td><td align="center"><sub><kbd>7</kbd></sub></td><td align="center"><sub><kbd>8</kbd></sub></td><td align="center"><sub><kbd>9</kbd></sub></td><td align="center"><sub><kbd>0</kbd></sub></td><td align="center"><sub><kbd>♡</kbd></sub></td></tr>
+<tr><td align="center"><sub><kbd>◇</kbd></sub></td><td align="center"><b>@</b><br><sub><kbd>Q</kbd></sub></td><td align="center"><b>!</b><br><sub><kbd>W</kbd></sub></td><td align="center"><b>{</b><br><sub><kbd>E</kbd></sub></td><td align="center"><b>}</b><br><sub><kbd>R</kbd></sub></td><td align="center"><b>&amp;</b><br><sub><kbd>T</kbd></sub></td><td></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td></td><td align="center"><b>^</b><br><sub><kbd>Y</kbd></sub></td><td align="center"><b>7</b><br><sub><kbd>U</kbd></sub></td><td align="center"><b>8</b><br><sub><kbd>I</kbd></sub></td><td align="center"><b>9</b><br><sub><kbd>O</kbd></sub></td><td align="center"><b>$</b><br><sub><kbd>P</kbd></sub></td><td align="center"><sub><kbd>⌫</kbd></sub></td></tr>
+<tr><td align="center"><sub><kbd>⇥</kbd></sub></td><td align="center"><b>-</b><br><sub><kbd>A</kbd></sub></td><td align="center"><b>\</b><br><sub><kbd>S</kbd></sub></td><td align="center"><b>(</b><br><sub><kbd>D</kbd></sub></td><td align="center"><b>)</b><br><sub><kbd>F</kbd></sub></td><td align="center"><b>*</b><br><sub><kbd>G</kbd></sub></td><td></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td></td><td align="center"><b>0</b><br><sub><kbd>H</kbd></sub></td><td align="center"><b>4</b><br><sub><kbd>J</kbd></sub></td><td align="center"><b>5</b><br><sub><kbd>K</kbd></sub></td><td align="center"><b>6</b><br><sub><kbd>L</kbd></sub></td><td align="center"><b>=</b><br><sub><kbd>;</kbd></sub></td><td align="center"><sub><kbd>⏎</kbd></sub></td></tr>
+<tr><td align="center"><sub><kbd>⌦</kbd></sub></td><td align="center"><b>`</b><br><sub><kbd>Z</kbd></sub></td><td align="center"><b>#</b><br><sub><kbd>X</kbd></sub></td><td align="center"><b>[</b><br><sub><kbd>C</kbd></sub></td><td align="center"><b>]</b><br><sub><kbd>V</kbd></sub></td><td align="center"><b>%</b><br><sub><kbd>B</kbd></sub></td><td align="center"><sub><kbd>[</kbd></sub></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td align="center"><sub><kbd>]</kbd></sub></td><td align="center"><b>|</b><br><sub><kbd>N</kbd></sub></td><td align="center"><b>1</b><br><sub><kbd>M</kbd></sub></td><td align="center"><b>2</b><br><sub><kbd>,</kbd></sub></td><td align="center"><b>3</b><br><sub><kbd>.</kbd></sub></td><td align="center"><b>,</b><br><sub><kbd>&#x27;</kbd></sub></td><td align="center"><sub><kbd>/</kbd></sub></td></tr>
+<tr><td></td><td></td><td></td><td align="center"><sub><kbd>⌃</kbd></sub></td><td align="center"><b>→ PLAIN</b><br><sub><kbd>⌥</kbd></sub></td><td align="center"><sub><kbd>↓</kbd></sub></td><td align="center"><sub><kbd>▭</kbd></sub></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td align="center"><sub><kbd>▭</kbd></sub></td><td align="center"><sub><kbd>↑</kbd></sub></td><td align="center"><sub><kbd>‡</kbd></sub></td><td align="center"><sub><kbd>▲</kbd></sub></td><td></td><td></td><td></td></tr>
+</table>
+
+### ADJUST
+
+Hold the ↓ and ↑ thumbs together.
+
+<table>
+<tr><td align="center"><b>Clear EEPROM</b><br><sub><kbd>∞</kbd></sub></td><td align="center">·<br><sub><kbd>1</kbd></sub></td><td align="center">·<br><sub><kbd>2</kbd></sub></td><td align="center">·<br><sub><kbd>3</kbd></sub></td><td align="center">·<br><sub><kbd>4</kbd></sub></td><td align="center">·<br><sub><kbd>5</kbd></sub></td><td></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td></td><td align="center">·<br><sub><kbd>6</kbd></sub></td><td align="center">·<br><sub><kbd>7</kbd></sub></td><td align="center">·<br><sub><kbd>8</kbd></sub></td><td align="center">·<br><sub><kbd>9</kbd></sub></td><td align="center">·<br><sub><kbd>0</kbd></sub></td><td align="center">·<br><sub><kbd>♡</kbd></sub></td></tr>
+<tr><td align="center"><b>Boot</b><br><sub><kbd>◇</kbd></sub></td><td align="center"><b>RGB on/off</b><br><sub><kbd>Q</kbd></sub></td><td align="center"><b>RGB mode</b><br><sub><kbd>W</kbd></sub></td><td align="center"><b>Hue −</b><br><sub><kbd>E</kbd></sub></td><td align="center"><b>Hue +</b><br><sub><kbd>R</kbd></sub></td><td align="center"><b>Scroll lock</b><br><sub><kbd>T</kbd></sub></td><td></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td></td><td align="center">·<br><sub><kbd>Y</kbd></sub></td><td align="center">·<br><sub><kbd>U</kbd></sub></td><td align="center">·<br><sub><kbd>I</kbd></sub></td><td align="center">·<br><sub><kbd>O</kbd></sub></td><td align="center">·<br><sub><kbd>P</kbd></sub></td><td align="center"><b>Boot</b><br><sub><kbd>⌫</kbd></sub></td></tr>
+<tr><td align="center">·<br><sub><kbd>⇥</kbd></sub></td><td align="center"><b>DPI</b><br><sub><kbd>A</kbd></sub></td><td align="center"><b>DPI snipe</b><br><sub><kbd>S</kbd></sub></td><td align="center"><b>Scroll speed</b><br><sub><kbd>D</kbd></sub></td><td align="center"><b>Save pointer</b><br><sub><kbd>F</kbd></sub></td><td align="center"><b>Snipe toggle</b><br><sub><kbd>G</kbd></sub></td><td></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td></td><td align="center">·<br><sub><kbd>H</kbd></sub></td><td align="center"><b>↓</b><br><sub><kbd>J</kbd></sub></td><td align="center"><b>↑</b><br><sub><kbd>K</kbd></sub></td><td align="center">·<br><sub><kbd>L</kbd></sub></td><td align="center">·<br><sub><kbd>;</kbd></sub></td><td align="center">·<br><sub><kbd>⏎</kbd></sub></td></tr>
+<tr><td align="center"><b>Shift</b><br><sub><kbd>⌦</kbd></sub></td><td align="center"><b>Bright −</b><br><sub><kbd>Z</kbd></sub></td><td align="center"><b>Bright +</b><br><sub><kbd>X</kbd></sub></td><td align="center"><b>Sat −</b><br><sub><kbd>C</kbd></sub></td><td align="center"><b>Sat +</b><br><sub><kbd>V</kbd></sub></td><td align="center"><b>Drag scroll toggle</b><br><sub><kbd>B</kbd></sub></td><td align="center">·<br><sub><kbd>[</kbd></sub></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td align="center">·<br><sub><kbd>]</kbd></sub></td><td align="center">·<br><sub><kbd>N</kbd></sub></td><td align="center">·<br><sub><kbd>M</kbd></sub></td><td align="center">·<br><sub><kbd>,</kbd></sub></td><td align="center"><b>Reset pointer</b><br><sub><kbd>.</kbd></sub></td><td align="center"><b>Dump pointer</b><br><sub><kbd>&#x27;</kbd></sub></td><td align="center">·<br><sub><kbd>/</kbd></sub></td></tr>
+<tr><td></td><td></td><td></td><td align="center"><sub><kbd>⌃</kbd></sub></td><td align="center"><sub><kbd>⌥</kbd></sub></td><td align="center"><sub><kbd>↓</kbd></sub></td><td align="center"><sub><kbd>▭</kbd></sub></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td align="center"><sub><kbd>▭</kbd></sub></td><td align="center"><sub><kbd>↑</kbd></sub></td><td align="center"><sub><kbd>‡</kbd></sub></td><td align="center"><sub><kbd>▲</kbd></sub></td><td></td><td></td><td></td></tr>
+</table>
+
+### PLAIN
+
+Typing layer without home-row mods. Turn on with RAISE + ⌥ (left), off with ⌥ (left).
+
+<table>
+<tr><td align="center"><sub><kbd>∞</kbd></sub></td><td align="center"><sub><kbd>1</kbd></sub></td><td align="center"><sub><kbd>2</kbd></sub></td><td align="center"><sub><kbd>3</kbd></sub></td><td align="center"><sub><kbd>4</kbd></sub></td><td align="center"><sub><kbd>5</kbd></sub></td><td></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td></td><td align="center"><sub><kbd>6</kbd></sub></td><td align="center"><sub><kbd>7</kbd></sub></td><td align="center"><sub><kbd>8</kbd></sub></td><td align="center"><sub><kbd>9</kbd></sub></td><td align="center"><sub><kbd>0</kbd></sub></td><td align="center"><sub><kbd>♡</kbd></sub></td></tr>
+<tr><td align="center"><sub><kbd>◇</kbd></sub></td><td align="center"><b>Q</b><br><sub><kbd>Q</kbd></sub></td><td align="center"><b>W</b><br><sub><kbd>W</kbd></sub></td><td align="center"><b>E</b><br><sub><kbd>E</kbd></sub></td><td align="center"><b>R</b><br><sub><kbd>R</kbd></sub></td><td align="center"><b>T</b><br><sub><kbd>T</kbd></sub></td><td></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td></td><td align="center"><b>Y</b><br><sub><kbd>Y</kbd></sub></td><td align="center"><b>U</b><br><sub><kbd>U</kbd></sub></td><td align="center"><b>I</b><br><sub><kbd>I</kbd></sub></td><td align="center"><b>O</b><br><sub><kbd>O</kbd></sub></td><td align="center"><b>P</b><br><sub><kbd>P</kbd></sub></td><td align="center"><sub><kbd>⌫</kbd></sub></td></tr>
+<tr><td align="center"><sub><kbd>⇥</kbd></sub></td><td align="center"><b>A</b><br><sub><kbd>A</kbd></sub></td><td align="center"><b>S</b><br><sub><kbd>S</kbd></sub></td><td align="center"><b>D</b><br><sub><kbd>D</kbd></sub></td><td align="center"><b>F</b><br><sub><kbd>F</kbd></sub></td><td align="center"><b>G</b><br><sub><kbd>G</kbd></sub></td><td></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td></td><td align="center"><b>H</b><br><sub><kbd>H</kbd></sub></td><td align="center"><b>J</b><br><sub><kbd>J</kbd></sub></td><td align="center"><b>K</b><br><sub><kbd>K</kbd></sub></td><td align="center"><b>L</b><br><sub><kbd>L</kbd></sub></td><td align="center"><b>;</b><br><sub><kbd>;</kbd></sub></td><td align="center"><sub><kbd>⏎</kbd></sub></td></tr>
+<tr><td align="center"><sub><kbd>⌦</kbd></sub></td><td align="center"><b>Z</b><br><sub><kbd>Z</kbd></sub></td><td align="center"><b>X</b><br><sub><kbd>X</kbd></sub></td><td align="center"><b>C</b><br><sub><kbd>C</kbd></sub></td><td align="center"><b>V</b><br><sub><kbd>V</kbd></sub></td><td align="center"><b>B</b><br><sub><kbd>B</kbd></sub></td><td align="center"><sub><kbd>[</kbd></sub></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td align="center"><sub><kbd>]</kbd></sub></td><td align="center"><b>N</b><br><sub><kbd>N</kbd></sub></td><td align="center"><b>M</b><br><sub><kbd>M</kbd></sub></td><td align="center"><b>,</b><br><sub><kbd>,</kbd></sub></td><td align="center"><b>.</b><br><sub><kbd>.</kbd></sub></td><td align="center"><b>&#x27;</b><br><sub><kbd>&#x27;</kbd></sub></td><td align="center"><sub><kbd>/</kbd></sub></td></tr>
+<tr><td></td><td></td><td></td><td align="center"><sub><kbd>⌃</kbd></sub></td><td align="center"><b>→ BASE</b><br><sub><kbd>⌥</kbd></sub></td><td align="center"><sub><kbd>↓</kbd></sub></td><td align="center"><sub><kbd>▭</kbd></sub></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td align="center"><sub><kbd>▭</kbd></sub></td><td align="center"><sub><kbd>↑</kbd></sub></td><td align="center"><sub><kbd>‡</kbd></sub></td><td align="center"><sub><kbd>▲</kbd></sub></td><td></td><td></td><td></td></tr>
+</table>
+<!-- layers:end -->
+
+### Notes
 
 - **Home-row mods:** Ctrl / GUI / Alt on A S D and K L ;. Layer-taps on F G H J (LOWER / RAISE).
-- **Inner keys:** tap for `[` / `]`, hold for Ctrl+Shift, so the left pinky doesn't have to hold both Ctrl (A) and Shift (Tab).
+- **Inner keys** <kbd>[</kbd> <kbd>]</kbd>: tap for `[` / `]`, hold for Ctrl+Shift, so the left pinky doesn't have to hold both Ctrl (A) and Shift (⇥).
   They work with keys on either hand. Holding one alone, e.g. for Ctrl+Shift+click, takes the 280 ms tapping term.
 - **Meh** is Ctrl+Shift+Alt.
 
-## LOWER (hold the LOWER thumb, F or J)
+## Pointer settings, step by step
 
-| | | | | | | | | | | | | | |
-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|   |   |   |   |   |   | | |   |   |   |   |   |   |
-| F1 | F2 | F3 | F4 | F5 | F6 | | | F7 | F8 | F9 | F10 | F11 | F12 |
-|   | _ | +<br><sub>Ctrl</sub> | ^<br><sub>Alt</sub> | $<br><sub>GUI</sub> |   | | | ← | ↓ | ↑ | → | End |   |
-|   | ~ | Drag scroll | Middle click | Snipe | F11 |   |   | Home | PgDn | PgUp | End | PgUp |   |
-| | | |   |   |   |   |   |   |   |   | | | |
+All of these are on ADJUST: keep the <kbd>↓</kbd> and <kbd>↑</kbd> thumbs held the whole time.
 
-## RAISE (hold the RAISE thumb, G or H)
+| To change | Hold | Then tap |
+|---|---|---|
+| Trackpoint speed | <kbd>A</kbd> (DPI) | <kbd>J</kbd> slower, <kbd>K</kbd> faster |
+| Trackpoint sniping speed | <kbd>S</kbd> (DPI snipe) | <kbd>J</kbd> / <kbd>K</kbd> |
+| Trackpoint scroll speed | <kbd>D</kbd> (Scroll speed) | <kbd>J</kbd> / <kbd>K</kbd> (bigger buffer = slower scrolling) |
+| Touchpad, any of the above | <kbd>⌦</kbd> (Shift) **and** <kbd>A</kbd> / <kbd>S</kbd> / <kbd>D</kbd> | <kbd>J</kbd> / <kbd>K</kbd> |
 
-| | | | | | | | | | | | | | |
-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|   |   |   |   |   |   | | |   |   |   |   |   |   |
-|   | @ | ! | { | } | & | | | ^ | 7 | 8 | 9 | $ |   |
-|   | - | \ | ( | ) | * | | | 0 | 4 | 5 | 6 | = |   |
-|   | &#96; | # | [ | ] | % |   |   | \| | 1 | 2 | 3 | , |   |
-| | | |   | → PLAIN |   |   |   |   |   |   | | | |
-
-## ADJUST (hold LOWER + RAISE)
-
-| | | | | | | | | | | | | | |
-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-| Clear EEPROM |   |   |   |   |   | | |   |   |   |   |   |   |
-| Boot | RGB on<br><sub>off</sub> | RGB mode | Hue − | Hue + | Scroll lock | | |   |   |   |   |   | Boot |
-|   | DPI | DPI snipe | Scroll speed | Save pointer | Snipe toggle | | |   | ↓ | ↑ |   |   |   |
-| Shift | Bright − | Bright + | Sat − | Sat + | Drag toggle |   |   |   |   |   | Reset pointer | Dump pointer |   |
-| | | |   |   |   |   |   |   |   |   | | | |
-
-**Changing pointer speed:** hold LOWER + RAISE, hold *DPI* (or *DPI snipe* or *Scroll speed*), tap ↓ / ↑.
-Then tap *Save pointer* so the setting survives a reboot. Also hold *Shift* (bottom-left on ADJUST) to tune the touchpad on the right half instead of the trackpoint.
-
-## PLAIN (RAISE → left RAlt thumb, back with the same key)
-
-Plain letters with no home-row mods, for typing-speed practice and games.
-
-| | | | | | | | | | | | | | |
-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-|   |   |   |   |   |   | | |   |   |   |   |   |   |
-|   | Q | W | E | R | T | | | Y | U | I | O | P |   |
-|   | A | S | D | F | G | | | H | J | K | L | ; |   |
-|   | Z | X | C | V | B |   |   | N | M | , | . | ' |   |
-| | | |   | → BASE |   |   |   |   |   |   | | | |
+Then tap <kbd>F</kbd> (Save pointer), still on ADJUST, or the change is lost at the next reboot.
+<kbd>B</kbd> toggles drag-scroll and <kbd>G</kbd> toggles sniping (add <kbd>⌦</kbd> for the touchpad); <kbd>T</kbd> cycles scroll lock.
+On LOWER you can also hold <kbd>X</kbd> to scroll with the trackpoint and hold <kbd>V</kbd> for slow sniping.
 
 ## Tap-hold behaviour
 
