@@ -15,7 +15,7 @@ On BASE the small text is the hold action instead. Empty keys fall through to th
 <!-- layers:start -->
 ### BASE
 
-Default layer, LEDs show your normal underglow. Small text is what the key does when held.
+Default layer, LEDs show your normal animation. Small text is what the key does when held.
 
 <table>
 <tr><td align="center"><b>`</b></td><td align="center"><b>1</b></td><td align="center"><b>2</b></td><td align="center"><b>3</b></td><td align="center"><b>4</b></td><td align="center"><b>5</b></td><td></td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td><td></td><td align="center"><b>6</b></td><td align="center"><b>7</b></td><td align="center"><b>8</b></td><td align="center"><b>9</b></td><td align="center"><b>0</b></td><td align="center"><b>-</b></td></tr>
@@ -80,7 +80,7 @@ LEDs gold. Typing layer without home-row mods. Turn on with RAISE + ⌥ (left), 
 - **Inner keys** <kbd>[</kbd> <kbd>]</kbd>: tap for `[` / `]`, hold for Ctrl+Shift, so the left pinky doesn't have to hold both Ctrl (A) and Shift (⇥).
   They work with keys on either hand. Holding one alone, e.g. for Ctrl+Shift+click, takes the 280 ms tapping term.
 - **Meh** is Ctrl+Shift+Alt.
-- **LED colours:** BASE = your normal underglow, LOWER blue, RAISE green, ADJUST purple, PLAIN gold. They show even when the underglow is switched off.
+- **LED colours:** all 35 LEDs per half (per-key + underglow) take the layer colour: LOWER blue, RAISE green, ADJUST purple, PLAIN gold. BASE shows your normal animation (change it in Vial → Lighting or with *RGB mode* on ADJUST). With RGB switched off, the layer colours are off too.
 
 ## Pointer settings, step by step
 

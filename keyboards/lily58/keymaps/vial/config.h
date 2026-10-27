@@ -38,24 +38,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define VIAL_UNLOCK_COMBO_ROWS { 0, 2 }
 #define VIAL_UNLOCK_COMBO_COLS { 0, 1 }
 
-// Underglow: 6 LEDs per half, synced over TRRS
-#define RGBLED_SPLIT { 6, 6 }
-#define RGBLIGHT_SLEEP
-// The half without USB never sees the host wake up, so the startup suspend check would keep it
-// "suspended" and RGBLIGHT_SLEEP would switch its LEDs off. keymap.c handles host suspend instead.
+// RGB matrix (35 LEDs per half) is configured in keyboards/lily58/rev1/keyboard.json, as in
+// holykeebs/lily58. The half without USB never sees the host wake up, so the startup suspend check
+// would keep it "suspended" and stop it drawing its LEDs. keymap.c handles host suspend instead.
 #define NO_USB_STARTUP_CHECK
-#define RGBLIGHT_LIMIT_VAL 150   // cap brightness to keep current draw sane
-#define RGBLIGHT_EFFECT_BREATHING
-#define RGBLIGHT_EFFECT_RAINBOW_MOOD
-#define RGBLIGHT_EFFECT_RAINBOW_SWIRL
-#define RGBLIGHT_EFFECT_SNAKE
-#define RGBLIGHT_EFFECT_KNIGHT
-#define RGBLIGHT_EFFECT_STATIC_GRADIENT
-#define RGBLIGHT_EFFECT_TWINKLE
+#define SPLIT_LAYER_STATE_ENABLE // layer colours on the half without USB
+#define RGB_MATRIX_KEYPRESSES    // reactive effects
 
-// Layer colours and feedback flashes (see rgb_layers in keymap.c)
-#define RGBLIGHT_LAYERS
-#define RGBLIGHT_LAYER_BLINK
-#define RGBLIGHT_LAYERS_RETAIN_VAL       // layer colours follow the brightness setting
-#define RGBLIGHT_LAYERS_OVERRIDE_RGB_OFF // and still show when the underglow is switched off
-#define RGBLIGHT_MAX_LAYERS 12
+// Split RPC used to flash the half without USB (keymap.c). Keep the userspace's own ids.
+#ifdef HK_SPLIT_SYNC_STATE
+#    undef SPLIT_TRANSACTION_IDS_USER
+#    define SPLIT_TRANSACTION_IDS_USER HK_SYNC_STATE, KM_FLASH_SYNC
+#else
+#    define SPLIT_TRANSACTION_IDS_USER KM_FLASH_SYNC
+#endif

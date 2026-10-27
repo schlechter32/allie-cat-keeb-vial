@@ -21,6 +21,7 @@
 #include "holykeebs.h"
 #include "pointing.h"
 #include "usb_device_state.h"
+#include "transactions.h"
 
 enum layer_number {
   _BASE = 0,
@@ -89,9 +90,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // Pointer speed: hold DPI / DPI snipe / scroll buffer and press Down / Up. HK_SAVE keeps it.
  [_ADJUST] = LAYOUT(
   QK_CLEAR_EEPROM, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,           XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-  QK_BOOT, UG_TOGG, UG_NEXT, UG_HUED, UG_HUEU, HK_C_SCROLL,               XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT,
+  QK_BOOT, RM_TOGG, RM_NEXT, RM_HUED, RM_HUEU, HK_C_SCROLL,               XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT,
   XXXXXXX, HK_P_SET_D, HK_P_SET_S, HK_P_SET_BUF, HK_SAVE, HK_S_MODE_T,    XXXXXXX, KC_DOWN, KC_UP,   XXXXXXX, XXXXXXX, XXXXXXX,
-  KC_LSFT, UG_VALD, UG_VALU, UG_SATD, UG_SATU, HK_D_MODE_T, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, HK_RESET, HK_DUMP, XXXXXXX,
+  KC_LSFT, RM_VALD, RM_VALU, RM_SATD, RM_SATU, HK_D_MODE_T, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, HK_RESET, HK_DUMP, XXXXXXX,
                     _______, _______, _______, _______,                   _______, _______, _______, _______
 ),
 
@@ -122,56 +123,90 @@ const char chordal_hold_layout[MATRIX_ROWS][MATRIX_COLS] PROGMEM = LAYOUT(
                  '*', '*', '*', '*',      '*', '*', '*', '*'
 );
 
-// Underglow: LEDs 0-5 are the left half, 6-11 the right half.
-const rgblight_segment_t PROGMEM led_lower[]      = RGBLIGHT_LAYER_SEGMENTS({0, 12, HSV_BLUE});
-const rgblight_segment_t PROGMEM led_raise[]      = RGBLIGHT_LAYER_SEGMENTS({0, 12, HSV_GREEN});
-const rgblight_segment_t PROGMEM led_adjust[]     = RGBLIGHT_LAYER_SEGMENTS({0, 12, HSV_PURPLE});
-const rgblight_segment_t PROGMEM led_plain[]      = RGBLIGHT_LAYER_SEGMENTS({0, 12, HSV_GOLD});
-// Pointer feedback: flashes the half whose device changed (left = trackpoint, right = touchpad).
-const rgblight_segment_t PROGMEM led_up_left[]    = RGBLIGHT_LAYER_SEGMENTS({0, 6, HSV_WHITE});
-const rgblight_segment_t PROGMEM led_up_right[]   = RGBLIGHT_LAYER_SEGMENTS({6, 6, HSV_WHITE});
-const rgblight_segment_t PROGMEM led_down_left[]  = RGBLIGHT_LAYER_SEGMENTS({0, 6, HSV_RED});
-const rgblight_segment_t PROGMEM led_down_right[] = RGBLIGHT_LAYER_SEGMENTS({6, 6, HSV_RED});
-const rgblight_segment_t PROGMEM led_saved[]      = RGBLIGHT_LAYER_SEGMENTS({0, 12, HSV_CYAN});
-
-// Later entries draw on top of earlier ones.
-enum led_layer {
-  LED_LOWER,
-  LED_RAISE,
-  LED_ADJUST,
-  LED_PLAIN,
-  LED_UP_LEFT,
-  LED_UP_RIGHT,
-  LED_DOWN_LEFT,
-  LED_DOWN_RIGHT,
-  LED_SAVED,
+// RGB matrix: 35 LEDs per half (6 underglow + 29 per key). Each half draws its own LEDs.
+// Non-BASE layers paint every LED in the layer colour; pointer feedback briefly overrides it.
+static const uint8_t PROGMEM layer_hues[][3] = {
+  [_LOWER]  = {HSV_BLUE},
+  [_RAISE]  = {HSV_GREEN},
+  [_ADJUST] = {HSV_PURPLE},
+  [_PLAIN]  = {HSV_GOLD},
 };
 
-const rgblight_segment_t *const PROGMEM rgb_layers[] = RGBLIGHT_LAYERS_LIST(
-  led_lower, led_raise, led_adjust, led_plain,
-  led_up_left, led_up_right, led_down_left, led_down_right, led_saved
-);
+enum flash_colour { FLASH_UP, FLASH_DOWN, FLASH_SAVED };
+static const uint8_t PROGMEM flash_hsv[][3] = {
+  [FLASH_UP]    = {HSV_WHITE},
+  [FLASH_DOWN]  = {HSV_RED},
+  [FLASH_SAVED] = {HSV_CYAN},
+};
 
-void keyboard_post_init_keymap(void) {
-  rgblight_layers = rgb_layers;
+static uint8_t  flash_colour;
+static uint16_t flash_started;
+static uint16_t flash_length; // 0 = no flash
+
+static void flash_start(uint8_t colour, uint16_t ms) {
+  flash_colour  = colour;
+  flash_length  = ms;
+  flash_started = timer_read();
 }
 
-// With NO_USB_STARTUP_CHECK, QMK no longer runs its suspend loop, so turn the underglow off here when
-// the host sleeps. Only the USB side reacts; the change syncs to the other half. QMK's USB wakeup
-// handler turns it back on.
+// The half without USB draws its own LEDs, so its flashes are sent over TRRS.
+typedef struct {
+  uint8_t colour;
+  uint8_t tens_of_ms;
+} flash_msg_t;
+
+static void flash_rpc_handler(uint8_t in_len, const void *in_data, uint8_t out_len, void *out_data) {
+  const flash_msg_t *msg = in_data;
+  flash_start(msg->colour, msg->tens_of_ms * 10);
+}
+
+// main = the USB half (left, trackpoint), peripheral = the other half (right, touchpad)
+static void flash_half(bool peripheral, uint8_t colour, uint16_t ms) {
+  if (peripheral) {
+    flash_msg_t msg = {colour, ms / 10};
+    transaction_rpc_send(KM_FLASH_SYNC, sizeof(msg), &msg);
+  } else {
+    flash_start(colour, ms);
+  }
+}
+
+static void fill_hsv(uint8_t led_min, uint8_t led_max, uint8_t hue, uint8_t sat) {
+  hsv_t hsv = {hue, sat, rgb_matrix_get_val()};
+  rgb_t rgb = hsv_to_rgb(hsv);
+  for (uint8_t i = led_min; i < led_max; i++) {
+    rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);
+  }
+}
+
+bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+  if (flash_length && timer_elapsed(flash_started) < flash_length) {
+    fill_hsv(led_min, led_max, pgm_read_byte(&flash_hsv[flash_colour][0]), pgm_read_byte(&flash_hsv[flash_colour][1]));
+    return false;
+  }
+  flash_length = 0;
+
+  uint8_t layer = get_highest_layer(layer_state);
+  if (layer != _BASE && layer < ARRAY_SIZE(layer_hues)) {
+    fill_hsv(led_min, led_max, pgm_read_byte(&layer_hues[layer][0]), pgm_read_byte(&layer_hues[layer][1]));
+  }
+  return false;
+}
+
+void keyboard_post_init_keymap(void) {
+  transaction_register_rpc(KM_FLASH_SYNC, flash_rpc_handler);
+}
+
+// With NO_USB_STARTUP_CHECK, QMK no longer runs its suspend loop, so turn the LEDs off here when the
+// host sleeps. Only the USB side reacts; the suspend state syncs to the other half. QMK's USB wakeup
+// handler turns them back on.
 void notify_usb_device_state_change_user(struct usb_device_state usb_device_state) {
   if (is_keyboard_master() && usb_device_state.configure_state == USB_DEVICE_STATE_SUSPEND) {
-    rgblight_suspend();
+    rgb_matrix_set_suspend_state(true);
   }
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-  state = update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
-  rgblight_set_layer_state(LED_LOWER, layer_state_cmp(state, _LOWER));
-  rgblight_set_layer_state(LED_RAISE, layer_state_cmp(state, _RAISE));
-  rgblight_set_layer_state(LED_ADJUST, layer_state_cmp(state, _ADJUST));
-  rgblight_set_layer_state(LED_PLAIN, layer_state_cmp(state, _PLAIN));
-  return state;
+  return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
 }
 
 // ZMK require-prior-idle-ms: a home-row key pressed within HRM_PRIOR_IDLE_MS of the previous
@@ -253,13 +288,14 @@ bool process_record_keymap(uint16_t keycode, keyrecord_t *record) {
   // Flash feedback for the holykeebs pointer settings (holykeebs handles the keys themselves).
   if (record->event.pressed) {
     bool setting = g_hk_state.setting_default_scale || g_hk_state.setting_sniping_scale || g_hk_state.setting_scroll_buffer;
-    bool right   = get_mods() & MOD_MASK_SHIFT; // Shift targets the peripheral (right) side
+    bool peripheral = get_mods() & MOD_MASK_SHIFT; // Shift targets the peripheral (right) side
     if (setting && keycode == KC_UP) {
-      rgblight_blink_layer(right ? LED_UP_RIGHT : LED_UP_LEFT, 150);
+      flash_half(peripheral, FLASH_UP, 150);
     } else if (setting && keycode == KC_DOWN) {
-      rgblight_blink_layer(right ? LED_DOWN_RIGHT : LED_DOWN_LEFT, 150);
+      flash_half(peripheral, FLASH_DOWN, 150);
     } else if (keycode == HK_SAVE || keycode == HK_RESET) {
-      rgblight_blink_layer(LED_SAVED, 600);
+      flash_half(false, FLASH_SAVED, 600);
+      flash_half(true, FLASH_SAVED, 600);
     }
   }
 

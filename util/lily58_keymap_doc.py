@@ -28,7 +28,7 @@ LEGEND = [
 
 # How to reach each layer, using the printed legends.
 LAYER_INFO = {
-    '_BASE': 'Default layer, LEDs show your normal underglow. Small text is what the key does when held.',
+    '_BASE': 'Default layer, LEDs show your normal animation. Small text is what the key does when held.',
     '_LOWER': 'LEDs blue. Hold the ↓ thumb (or hold F / J).',
     '_RAISE': 'LEDs green. Hold the ↑ thumb (or hold G / H).',
     '_ADJUST': 'LEDs purple. Hold the ↓ and ↑ thumbs together.',
@@ -48,8 +48,8 @@ BASIC = {
 NAMED = {
     'MS_BTN1': 'Left click', 'MS_BTN2': 'Right click', 'MS_BTN3': 'Middle click',
     'QK_BOOT': 'Boot', 'QK_CLEAR_EEPROM': 'Clear EEPROM',
-    'UG_TOGG': 'RGB on/off', 'UG_NEXT': 'RGB mode', 'UG_HUED': 'Hue −', 'UG_HUEU': 'Hue +',
-    'UG_SATD': 'Sat −', 'UG_SATU': 'Sat +', 'UG_VALD': 'Bright −', 'UG_VALU': 'Bright +',
+    'RM_TOGG': 'RGB on/off', 'RM_NEXT': 'RGB mode', 'RM_HUED': 'Hue −', 'RM_HUEU': 'Hue +',
+    'RM_SATD': 'Sat −', 'RM_SATU': 'Sat +', 'RM_VALD': 'Bright −', 'RM_VALU': 'Bright +',
     'HK_SAVE': 'Save pointer', 'HK_RESET': 'Reset pointer', 'HK_DUMP': 'Dump pointer',
     'HK_P_SET_D': 'DPI', 'HK_P_SET_S': 'DPI snipe', 'HK_P_SET_BUF': 'Scroll speed',
     'HK_S_MODE': 'Snipe', 'HK_S_MODE_T': 'Snipe toggle', 'HK_D_MODE': 'Drag scroll',
@@ -59,10 +59,10 @@ DESCRIPTIONS = {
     'MS_BTN1': 'Mouse button 1.', 'MS_BTN2': 'Mouse button 2.', 'MS_BTN3': 'Mouse button 3.',
     'QK_BOOT': 'Reboots the half that has the USB cable into the bootloader (RPI-RP2 drive).',
     'QK_CLEAR_EEPROM': 'Wipes saved settings: Vial keymap changes, QMK Settings and pointer settings.',
-    'UG_TOGG': 'Underglow on / off.', 'UG_NEXT': 'Next underglow animation.',
-    'UG_HUED': 'Underglow hue down.', 'UG_HUEU': 'Underglow hue up.',
-    'UG_SATD': 'Underglow saturation down.', 'UG_SATU': 'Underglow saturation up.',
-    'UG_VALD': 'Underglow brightness down.', 'UG_VALU': 'Underglow brightness up.',
+    'RM_TOGG': 'LEDs on / off.', 'RM_NEXT': 'Next LED animation.',
+    'RM_HUED': 'LED hue down.', 'RM_HUEU': 'LED hue up.',
+    'RM_SATD': 'LED saturation down.', 'RM_SATU': 'LED saturation up.',
+    'RM_VALD': 'LED brightness down (also dims the layer colours).', 'RM_VALU': 'LED brightness up.',
     'HK_SAVE': 'Saves the pointer settings so they survive a reboot.',
     'HK_RESET': 'Resets the pointer settings to the defaults.',
     'HK_DUMP': 'Prints the pointer settings to the debug console (only with CONSOLE=yes builds).',

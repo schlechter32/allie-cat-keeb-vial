@@ -2,7 +2,7 @@
   "name": "Lily58",
   "vendorId": "0x484B",
   "productId": "0x5858",
-  "lighting": "qmk_rgblight",
+  "lighting": "vialrgb",
   "customKeycodes": [
     {"name": "HK_SAVE", "title": "Save pointer settings to EEPROM", "shortName": "HK\nSave"},
     {"name": "HK_RESET", "title": "Reset pointer settings to defaults", "shortName": "HK\nReset"},
