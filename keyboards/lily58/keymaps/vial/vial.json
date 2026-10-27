@@ -2,6 +2,20 @@
   "name": "Lily58",
   "vendorId": "0x484B",
   "productId": "0x5858",
+  "lighting": "qmk_rgblight",
+  "customKeycodes": [
+    {"name": "HK_SAVE", "title": "Save pointer settings to EEPROM", "shortName": "HK\nSave"},
+    {"name": "HK_RESET", "title": "Reset pointer settings to defaults", "shortName": "HK\nReset"},
+    {"name": "HK_DUMP", "title": "Dump pointer settings to console", "shortName": "HK\nDump"},
+    {"name": "HK_P_SET_D", "title": "Hold + press Up/Down to change normal pointer speed", "shortName": "DPI\nNormal"},
+    {"name": "HK_P_SET_S", "title": "Hold + press Up/Down to change sniping speed", "shortName": "DPI\nSnipe"},
+    {"name": "HK_P_SET_BUF", "title": "Hold + press Up/Down to change scroll speed (buffer)", "shortName": "Scroll\nBuf"},
+    {"name": "HK_S_MODE", "title": "Sniping mode while held", "shortName": "Snipe"},
+    {"name": "HK_S_MODE_T", "title": "Toggle sniping mode", "shortName": "Snipe\nTog"},
+    {"name": "HK_D_MODE", "title": "Drag-scroll while held", "shortName": "Drag\nScroll"},
+    {"name": "HK_D_MODE_T", "title": "Toggle drag-scroll", "shortName": "Drag\nTog"},
+    {"name": "HK_C_SCROLL", "title": "Cycle scroll lock: off / horizontal / vertical", "shortName": "Scroll\nLock"}
+  ],
   "matrix": { "rows": 10, "cols": 6 },
   "layouts": {
     "keymap": [

@@ -14,225 +14,194 @@
   * along with this program.  If not, see <http://www.gnu.org/licenses/>.
   */
 
+// Port of the ZMK corne keymap (zmk-config/config/corne.keymap) to the Lily58.
+// The Lily58-only keys (number row, inner keys, outer thumbs) carry the extras.
+
 #include QMK_KEYBOARD_H
-#include <stdio.h>
-#include "users/alliecatowo/alliecatowo.h"
-
-#define QK_C_EEPROM QK_CLEAR_EEPROM
-
-//extern uint8_t is_master;
+#include "holykeebs.h"
 
 enum layer_number {
-  _QWERTY = 0,
+  _BASE = 0,
   _LOWER,
   _RAISE,
-  _ADJUST,
+  _ADJUST, // LOWER + RAISE
+  _PLAIN,  // no home-row mods, toggled from RAISE
+  _SPARE,  // free for Vial
 };
 
-#define RAISE MO(_RAISE)
-#define LOWER MO(_LOWER)
+// Home-row mods (ZMK hmmod / hmmodr / hmlayer / hmlayerr)
+#define HM_A    LCTL_T(KC_A)
+#define HM_S    LGUI_T(KC_S)
+#define HM_D    LALT_T(KC_D)
+#define HM_F    LT(_LOWER, KC_F)
+#define HM_G    LT(_RAISE, KC_G)
+#define HM_H    LT(_RAISE, KC_H)
+#define HM_J    LT(_LOWER, KC_J)
+#define HM_K    LALT_T(KC_K)
+#define HM_L    RGUI_T(KC_L)
+#define HM_SCLN RCTL_T(KC_SCLN)
+
+// Pinky shifts (ZMK pinkyshiftL / pinkyshiftR)
+#define PS_TAB  LSFT_T(KC_TAB)
+#define PS_ENT  RSFT_T(KC_ENT)
+
+// Ctrl+Alt+Shift holds (ZMK SpaceMeh / slash)
+#define MEH_SPC MEH_T(KC_SPC)
+#define MEH_SLS MEH_T(KC_SLSH)
+
+// Held Ctrl+Shift on the inner keys: fixes Ctrl (A) + Shift (Tab) both being on the left pinky
+#define CS_HOLD LCTL(KC_LSFT)
+
+// LOWER mod-taps whose tap is a shifted symbol; the tap is sent in process_record_keymap
+#define LM_PLUS LCTL_T(KC_EQL)
+#define LM_CIRC LALT_T(KC_6)
+#define LM_DLR  LGUI_T(KC_4)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-/* QWERTY
- * ,-----------------------------------------.                    ,-----------------------------------------.
- * | ESC  |   1  |   2  |   3  |   4  |   5  |                    |   6  |   7  |   8  |   9  |   0  |  ~   |
- * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * | Tab  |   Q  |   W  |   E  |   R  |   T  |                    |   Y  |   U  |   I  |   O  |   P  |  -   |
- * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |LCTRL |   A  |   S  |   D  |   F  |   G  |-------.    ,-------|   H  |   J  |   K  |   L  |   ;  |  '   |
- * |------+------+------+------+------+------|   [   |    |    ]  |------+------+------+------+------+------|
- * |LShift|   Z  |   X  |   C  |   V  |   B  |-------|    |-------|   N  |   M  |   ,  |   .  |   /  |RShift|
- * `-----------------------------------------/       /     \      \-----------------------------------------'
- *                   |LOWER | LGUI | Alt  | /Space  /       \Enter \  |BackSP| RGUI |RAISE |
- *                   |      |      |      |/       /         \      \ |      |      |      |
- *                   `-------------------''-------'           '------''--------------------'
- */
-
- [_QWERTY] = LAYOUT(
-  KC_ESC,   KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                     KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_GRV,
-  KC_TAB,   KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                     KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_MINS,
-  KC_LCTL,  KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                     KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
-  KC_LSFT,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B, KC_LBRC,  KC_RBRC,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,  KC_RSFT,
-                      LOWER, KC_LGUI,  KC_LALT, KC_SPC,   KC_ENT,   KC_BSPC,  KC_RGUI, RAISE
-),
-/* LOWER
- * ,-----------------------------------------.                    ,-----------------------------------------.
- * |      |      |      |      |      |      |                    |      |      |      |      |      |      |
- * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |      |   !  |   @  |   #  |   $  |   %  |                    |   ^  |   &  |   *  |   (  |   )  |      |
- * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |      |   1  |   2  |   3  |   4  |   5  |-------.    ,-------|   6  |   7  |   8  |   9  |   0  |      |
- * |------+------+------+------+------+------|   [   |    |    ]  |------+------+------+------+------+------|
- * |      |      |      |      |      |      |-------|    |-------|   |  |   `  |   +  |   {  |   }  |      |
- * `-----------------------------------------/       /     \      \-----------------------------------------'
- *                   |LOWER | LGUI | Alt  | /Space  /       \Enter \  |BackSP| RGUI |RAISE |
- *                   |      |      |      |/       /         \      \ |      |      |      |
- *                   `-------------------''-------'           '------''--------------------'
- */
-[_LOWER] = LAYOUT(
-  _______, _______, _______, _______, _______, _______,                        _______, _______, _______,_______, _______, _______,
-  _______, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                        KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, _______,
-  _______, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                           KC_6,    KC_7,    KC_8,    KC_9,    KC_0, _______,
-  _______, HK_D_MODE, KC_BTN4, KC_BTN5, KC_BTN1, KC_BTN2, HK_S_MODE,  _______, KC_PIPE, KC_GRAVE, KC_PLUS, KC_LCBR, KC_RCBR, _______,
-                             _______, _______, _______, _______,      _______,  _______, _______, _______
-),
-/* RAISE
- * ,-----------------------------------------.                    ,-----------------------------------------.
- * |      |      |      |      |      |      |                    |      |      |      |      |      |      |
- * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |                    |  F7  |  F8  |  F9  | F10  | F11  | F12  |
- * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |      |      |      |      |      |      |-------.    ,-------|      | Left | Down |  Up  |Right |      |
- * |------+------+------+------+------+------|   [   |    |    ]  |------+------+------+------+------+------|
- * |      |      |      |      |      |      |-------|    |-------|   +  |   =  |   [  |   ]  |   \  |      |
- * `-----------------------------------------/       /     \      \-----------------------------------------'
- *                   |LOWER | LGUI | Alt  | /Space  /       \Enter \  |BackSP| RGUI |RAISE |
- *                   |      |      |      |/       /         \      \ |      |      |      |
- *                   `-------------------''-------'           '------''--------------------'
- */
-
-[_RAISE] = LAYOUT(
-  _______, _______, _______, _______, _______, _______,                     _______, _______, _______, _______, _______, _______,
-  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,                       KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
-  _______, _______, _______, _______, _______, _______,                     XXXXXXX, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, XXXXXXX,
-  _______, _______, _______, _______, _______, _______,   _______, _______, KC_PLUS, KC_EQL,  KC_LBRC, KC_RBRC, KC_BSLS, _______,
-                             _______, _______, _______,  _______, _______,  _______, _______, _______
+ [_BASE] = LAYOUT(
+  KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                       KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS,
+  KC_ESC,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                       KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
+  PS_TAB,  HM_A,    HM_S,    HM_D,    HM_F,    HM_G,                       HM_H,    HM_J,    HM_K,    HM_L,    HM_SCLN, PS_ENT,
+  KC_DEL,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    CS_HOLD, CS_HOLD,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_QUOT, MEH_SLS,
+                    MS_BTN1, KC_RALT, MO(_LOWER), MEH_SPC,      C(KC_BSPC), MO(_RAISE), KC_RALT, MS_BTN2
 ),
 
-/* ADJUST
- * ,-----------------------------------------.                    ,-----------------------------------------.
- * |      |      |      |      |      |      |                    |      |      |      |      |      |      |
- * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |      |      |      |      |      |      |                    |      |      |      |      |      |      |
- * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |      |      |      |      |      |      |-------.    ,-------|      |      |      |      |      |      |
- * |------+------+------+------+------+------|       |    |       |------+------+------+------+------+------|
- * |      |      |      |      |      |      |-------|    |-------|      |      |      |      |      |      |
- * `-----------------------------------------/       /     \      \-----------------------------------------'
- *                   |LOWER | LGUI | Alt  | /Space  /       \Enter \  |BackSP| RGUI |RAISE |
- *                   |      |      |      |/       /         \      \ |      |      |      |
- *                   `----------------------------'           '------''--------------------'
- */
-  [_ADJUST] = LAYOUT(
-    XXXXXXX,      XXXXXXX,    XXXXXXX,    XXXXXXX,      XXXXXXX, XXXXXXX,                        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-    QK_BOOT,      HK_DUMP,    HK_SAVE,    HK_RESET,     XXXXXXX, HK_C_SCROLL,                    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT,
-    QK_C_EEPROM,  HK_P_SET_D, HK_P_SET_S, HK_P_SET_BUF, XXXXXXX, HK_S_MODE_T,                    KC_UP,   KC_DOWN, XXXXXXX, XXXXXXX, XXXXXXX, QK_C_EEPROM,
-    KC_LSFT,      XXXXXXX,    XXXXXXX,    XXXXXXX,      XXXXXXX, HK_D_MODE_T, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-                                                   _______, _______, _______, _______,  _______, _______, _______, _______
-  )
+ [_LOWER] = LAYOUT(
+  _______, _______, _______, _______, _______, _______,                    _______, _______, _______, _______, _______, _______,
+  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,                      KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,
+  _______, KC_UNDS, LM_PLUS, LM_CIRC, LM_DLR,  _______,                    KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_END,  _______,
+  _______, KC_TILD, HK_D_MODE, MS_BTN3, HK_S_MODE, KC_F11, _______, _______, KC_HOME, KC_PGDN, KC_PGUP, KC_END,  KC_PGUP, _______,
+                    _______, _______, _______, _______,                    _______, _______, _______, _______
+),
+
+ [_RAISE] = LAYOUT(
+  _______, _______, _______, _______, _______, _______,                    _______, _______, _______, _______, _______, _______,
+  _______, KC_AT,   KC_EXLM, KC_LCBR, KC_RCBR, KC_AMPR,                    KC_CIRC, KC_7,    KC_8,    KC_9,    KC_DLR,  _______,
+  _______, KC_MINS, KC_BSLS, KC_LPRN, KC_RPRN, KC_ASTR,                    KC_0,    KC_4,    KC_5,    KC_6,    KC_EQL,  _______,
+  _______, KC_GRV,  KC_HASH, KC_LBRC, KC_RBRC, KC_PERC, _______, _______,  KC_PIPE, KC_1,    KC_2,    KC_3,    KC_COMM, _______,
+                    _______, TO(_PLAIN), _______, _______,                 _______, _______, _______, _______
+),
+
+// Pointer speed: hold DPI / DPI snipe / scroll buffer and press Down / Up. HK_SAVE keeps it.
+ [_ADJUST] = LAYOUT(
+  QK_CLEAR_EEPROM, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,           XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+  QK_BOOT, UG_TOGG, UG_NEXT, UG_HUED, UG_HUEU, HK_C_SCROLL,               XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT,
+  XXXXXXX, HK_P_SET_D, HK_P_SET_S, HK_P_SET_BUF, HK_SAVE, HK_S_MODE_T,    XXXXXXX, KC_DOWN, KC_UP,   XXXXXXX, XXXXXXX, XXXXXXX,
+  KC_LSFT, UG_VALD, UG_VALU, UG_SATD, UG_SATU, HK_D_MODE_T, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, HK_RESET, HK_DUMP, XXXXXXX,
+                    _______, _______, _______, _______,                   _______, _______, _______, _______
+),
+
+ [_PLAIN] = LAYOUT(
+  _______, _______, _______, _______, _______, _______,                    _______, _______, _______, _______, _______, _______,
+  _______, KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                       KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    _______,
+  _______, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                       KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, _______,
+  _______, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    _______, _______,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_QUOT, _______,
+                    _______, TO(_BASE), _______, _______,                  _______, _______, _______, _______
+),
+
+ [_SPARE] = LAYOUT(
+  _______, _______, _______, _______, _______, _______,                    _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______,                    _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______,                    _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______, _______, _______, _______,
+                    _______, _______, _______, _______,                    _______, _______, _______, _______
+)
 };
 
+// Thumbs are '*' so they can trigger holds on either hand (ZMK lists the space thumb on both sides).
+const char chordal_hold_layout[MATRIX_ROWS][MATRIX_COLS] PROGMEM = LAYOUT(
+  'L', 'L', 'L', 'L', 'L', 'L',                'R', 'R', 'R', 'R', 'R', 'R',
+  'L', 'L', 'L', 'L', 'L', 'L',                'R', 'R', 'R', 'R', 'R', 'R',
+  'L', 'L', 'L', 'L', 'L', 'L',                'R', 'R', 'R', 'R', 'R', 'R',
+  'L', 'L', 'L', 'L', 'L', 'L', 'L',      'R', 'R', 'R', 'R', 'R', 'R', 'R',
+                 '*', '*', '*', '*',      '*', '*', '*', '*'
+);
+
 layer_state_t layer_state_set_user(layer_state_t state) {
-  state = update_tri_layer_state(state, _RAISE, _LOWER, _ADJUST);
-  return state;
+  return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
 }
 
-#if defined(OLED_ENABLE) && !defined(HK_OLED_ENABLE)
+// ZMK require-prior-idle-ms: a home-row key pressed within HRM_PRIOR_IDLE_MS of the previous
+// typed key is forced to its tap keycode, so fast rolls never produce a modifier.
+static uint16_t last_typed_time;
+static bool     typing_streak;
+static uint8_t  forced_tap[MATRIX_ROWS][MATRIX_COLS];
 
-oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-  if (!is_keyboard_master())
-    return OLED_ROTATION_180;  // flips the display 180 degrees if offhand
-  return rotation;
-}
-
-static void render_logo(void) {
-    static const char PROGMEM logo[] = {
-        0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88, 0x89, 0x8A, 0x8B, 0x8C, 0x8D, 0x8E, 0x8F, 0x90, 0x91, 0x92, 0x93, 0x94,
-        0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7, 0xA8, 0xA9, 0xAA, 0xAB, 0xAC, 0xAD, 0xAE, 0xAF, 0xB0, 0xB1, 0xB2, 0xB3, 0xB4,
-        0xC0, 0xC1, 0xC2, 0xC3, 0xC4, 0xC5, 0xC6, 0xC7, 0xC8, 0xC9, 0xCA, 0xCB, 0xCC, 0xCD, 0xCE, 0xCF, 0xD0, 0xD1, 0xD2, 0xD3, 0xD4, 0x00
-    };
-
-    oled_write_P(logo, false);
-}
-char keylog_str[24] = {};
-char keylogs_str[21] = {};
-int keylogs_str_idx = 0;
-
-const char code_to_name[60] = {
-    ' ', ' ', ' ', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
-    'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
-    'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-    '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
-    'R', 'E', 'B', 'T', '_', '-', '=', '[', ']', '\\',
-    '#', ';', '\'', '`', ',', '.', '/', ' ', ' ', ' '};
-
-void set_keylog(uint16_t keycode, keyrecord_t *record) {
-  char name = ' ';
-  if (keycode < 60) {
-    name = code_to_name[keycode];
+static uint8_t hrm_tap_keycode(uint16_t keycode) {
+  if (keycode == PS_TAB || keycode == PS_ENT) {
+    return KC_NO; // pinky shifts had no prior-idle in ZMK
   }
-
-  // update keylog
-  snprintf(keylog_str, sizeof(keylog_str), "%dx%d, k%2d : %c",
-           record->event.key.row, record->event.key.col,
-           keycode, name);
-
-  // update keylogs
-  if (keylogs_str_idx == sizeof(keylogs_str) - 1) {
-    keylogs_str_idx = 0;
-    for (int i = 0; i < sizeof(keylogs_str) - 1; i++) {
-      keylogs_str[i] = ' ';
-    }
-  }
-
-  keylogs_str[keylogs_str_idx] = name;
-  keylogs_str_idx++;
-}
-
-const char *read_keylog(void) {
-  return keylog_str;
-}
-
-const char *read_keylogs(void) {
-  return keylogs_str;
-}
-//new
-
-bool oled_task_user(void) {
-  #ifdef OLED_FLIP
-  bool condition = !is_keyboard_master();
-  #else
-  bool condition = is_keyboard_master();
-  #endif
-  if (condition) {
-    // Host Keyboard Layer Status
-    oled_write_P(PSTR("Layer: "), false);
-
-    switch (get_highest_layer(layer_state)) {
-    case _QWERTY:
-        oled_write_ln_P(PSTR("Default"), false);
-        break;
-    case _RAISE:
-        oled_write_ln_P(PSTR("Raise"), false);
-        break;
-    case _LOWER:
-        oled_write_ln_P(PSTR("Lower"), false);
-        break;
-    case _ADJUST:
-        oled_write_ln_P(PSTR("Adjust"), false);
-        break;
-    default:
-        oled_write_ln_P(PSTR("Undefined"), false);
-    }
-
-    oled_write_ln(read_keylog(), false);
-    oled_write_ln(read_keylogs(), false);
-
+  if (IS_QK_MOD_TAP(keycode)) {
+    keycode = QK_MOD_TAP_GET_TAP_KEYCODE(keycode);
+  } else if (IS_QK_LAYER_TAP(keycode)) {
+    keycode = QK_LAYER_TAP_GET_TAP_KEYCODE(keycode);
   } else {
-      render_logo();
+    return KC_NO;
   }
-    return false;
+  switch (keycode) {
+    case KC_A ... KC_Z:
+    case KC_SCLN:
+    case KC_SLSH:
+    case KC_SPC:
+      return keycode;
+  }
+  return KC_NO;
 }
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  if (record->event.pressed) {
-#ifdef OLED_ENABLE
-    set_keylog(keycode, record);
-#endif
-    // set_timelog();
+static void mark_typed(void) {
+  last_typed_time = timer_read();
+  typing_streak   = true;
+}
+
+bool pre_process_record_user(uint16_t keycode, keyrecord_t *record) {
+  if (record->event.type != KEY_EVENT) {
+    return true;
+  }
+  uint8_t row = record->event.key.row;
+  uint8_t col = record->event.key.col;
+
+  if (!record->event.pressed) {
+    if (forced_tap[row][col]) {
+      record->keycode       = forced_tap[row][col];
+      forced_tap[row][col]  = KC_NO;
+    }
+    return true;
+  }
+
+  uint8_t tap = hrm_tap_keycode(keycode);
+  if (tap != KC_NO) {
+    if (typing_streak && timer_elapsed(last_typed_time) < HRM_PRIOR_IDLE_MS) {
+      record->keycode      = tap;
+      forced_tap[row][col] = tap;
+      mark_typed();
+    }
+  } else if (keycode >= KC_A && keycode <= KC_SLASH) {
+    mark_typed();
+  } else {
+    typing_streak = false;
   }
   return true;
 }
 
-#endif // OLED_ENABLE
+static bool tap_shifted(uint16_t keycode, keyrecord_t *record) {
+  if (record->tap.count && record->event.pressed) {
+    tap_code16(keycode);
+    return false;
+  }
+  return true;
+}
+
+bool process_record_keymap(uint16_t keycode, keyrecord_t *record) {
+  // A home-row key that resolved as a tap continues the typing streak.
+  if (record->event.pressed && record->tap.count && hrm_tap_keycode(keycode) != KC_NO) {
+    mark_typed();
+  }
+
+  switch (keycode) {
+    case LM_PLUS: return tap_shifted(KC_PLUS, record);
+    case LM_CIRC: return tap_shifted(KC_CIRC, record);
+    case LM_DLR:  return tap_shifted(KC_DLR, record);
+  }
+  return true;
+}
