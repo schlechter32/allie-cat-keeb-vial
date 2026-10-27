@@ -18,6 +18,12 @@ static int magic_settings_set(const qmk_settings_proto_t *proto, const void *set
 
 qmk_settings_t QS;
 
+/* Default for QS.tapping bitfield (1 = permissive hold, 2 = disable hold on other key press,
+ * 4 = disable quick tap, 8 = retro tapping). Keymaps may override in config.h. */
+#ifndef QS_TAPPING_DEFAULT
+#    define QS_TAPPING_DEFAULT 0
+#endif
+
 #define DECLARE_SETTING_NOTIFY(id, _get, _set, _notify)  { .qsid=id, .get=_get, .set=_set, .notify=_notify }
 #define DECLARE_SETTING(id, _get, _set) DECLARE_SETTING_NOTIFY(id, _get, _set, NULL)
 #define DECLARE_STATIC_SETTING_NOTIFY(id, field, notify_)  { .qsid=id, .ptr=&QS.field, .sz=sizeof(QS.field), .get=eeprom_settings_get, .set=eeprom_settings_set, .notify=notify_ }
@@ -181,7 +187,7 @@ void qmk_settings_reset(void) {
 
     QS.combo_term = COMBO_TERM;
     QS.tapping_term = TAPPING_TERM;
-    QS.tapping = 0;
+    QS.tapping = QS_TAPPING_DEFAULT;
     QS.tap_code_delay = TAP_CODE_DELAY;
     QS.tap_hold_caps_delay = TAP_HOLD_CAPS_DELAY;
     QS.tapping_toggle = TAPPING_TOGGLE;
