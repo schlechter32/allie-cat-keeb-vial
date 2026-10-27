@@ -7,6 +7,10 @@
 
 This repository is a **Vial-enabled fork** of the [holykeebs/qmk_firmware](https://github.com/idank/qmk_firmware) repository, bringing modern Vial support to holykeebs' amazing pointing device implementations for keyboards like the Lily58.
 
+## ⌨️ My Layout
+
+Lily58 with a trackpoint (left) and a TPS43 touchpad (right): see the [keymap and flashing guide](keyboards/lily58/keymaps/vial/readme.md).
+
 ## 🛍️ Get Your Holykeebs Hardware
 
 Visit the **[Holykeebs Store](https://holykeebs.com)** to purchase trackballs, touchpads, trackpoints, and other pointing device modules for your mechanical keyboard!
